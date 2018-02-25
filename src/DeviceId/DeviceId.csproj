@@ -21,4 +21,10 @@
     <Reference Include="System.Management" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Management">
+      <Version>4.5.0-preview1-25914-04</Version>
+    </PackageReference>
+  </ItemGroup>
+
 </Project>

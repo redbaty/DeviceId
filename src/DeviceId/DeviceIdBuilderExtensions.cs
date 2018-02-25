@@ -62,7 +62,6 @@ namespace DeviceId
             return builder.AddComponent(new DeviceIdComponent("OSVersion", Environment.OSVersion.ToString()));
         }
 
-#if NET40
         /// <summary>
         /// Adds the MAC address to the device identifier.
         /// </summary>
@@ -70,7 +69,15 @@ namespace DeviceId
         /// <returns>The <see cref="DeviceIdBuilder"/> instance.</returns>
         public static DeviceIdBuilder AddMacAddress(this DeviceIdBuilder builder)
         {
-            return builder.AddComponent(new WmiDeviceIdComponent("MACAddress", "Win32_NetworkAdapterConfiguration", "MACAddress"));
+            try
+            {
+                return builder.AddComponent(new WmiDeviceIdComponent("MACAddress", "Win32_NetworkAdapterConfiguration",
+                    "MACAddress"));
+            }
+            catch (PlatformNotSupportedException)
+            {
+                return builder;
+            }
         }
 
         /// <summary>
@@ -80,7 +87,14 @@ namespace DeviceId
         /// <returns>The <see cref="DeviceIdBuilder"/> instance.</returns>
         public static DeviceIdBuilder AddProcessorId(this DeviceIdBuilder builder)
         {
-            return builder.AddComponent(new WmiDeviceIdComponent("ProcessorId", "Win32_Processor", "ProcessorId"));
+            try
+            {
+                return builder.AddComponent(new WmiDeviceIdComponent("ProcessorId", "Win32_Processor", "ProcessorId"));
+            }
+            catch (PlatformNotSupportedException)
+            {
+                return builder;
+            }
         }
 
         /// <summary>
@@ -90,9 +104,16 @@ namespace DeviceId
         /// <returns>The <see cref="DeviceIdBuilder"/> instance.</returns>
         public static DeviceIdBuilder AddMotherboardSerialNumber(this DeviceIdBuilder builder)
         {
-            return builder.AddComponent(new WmiDeviceIdComponent("MotherboardSerialNumber", "Win32_BaseBoard", "SerialNumber"));
+            try
+            {
+                return builder.AddComponent(new WmiDeviceIdComponent("MotherboardSerialNumber", "Win32_BaseBoard",
+                    "SerialNumber"));
+            }
+            catch (PlatformNotSupportedException)
+            {
+                return builder;
+            }
         }
-#endif
 
         /// <summary>
         /// Adds a file-based token to the device identifier.
